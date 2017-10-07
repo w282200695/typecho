@@ -124,6 +124,8 @@ function _v($name, $default = '') {
  */
 function _p($adapter) {
     switch ($adapter) {
+        case 'Mssql':
+            return Typecho_Db_Adapter_Mssql::isAvailable();
         case 'Mysql':
             return Typecho_Db_Adapter_Mysql::isAvailable();
         case 'Mysqli':
@@ -447,7 +449,7 @@ Typecho_Cookie::set('__typecho_lang', $lang);
                 <?php endif;?>
             <?php elseif (isset($_GET['config'])): ?>
             <?php
-                    $adapters = array('Mysql', 'Mysqli', 'Pdo_Mysql', 'SQLite', 'Pdo_SQLite', 'Pgsql', 'Pdo_Pgsql');
+                    $adapters = array('Mssql','Mysql', 'Mysqli', 'Pdo_Mysql', 'SQLite', 'Pdo_SQLite', 'Pgsql', 'Pdo_Pgsql');
                     foreach ($adapters as $firstAdapter) {
                         if (_p($firstAdapter)) {
                             break;
@@ -582,6 +584,7 @@ Typecho_Db::set(\$db);
                             <li>
                             <label for="dbAdapter" class="typecho-label"><?php _e('数据库适配器'); ?></label>
                             <select name="dbAdapter" id="dbAdapter">
+                                <?php if (_p('Mssql')): ?><option value="Mssql"<?php if('Mssql' == $adapter): ?> selected="selected"<?php endif; ?>><?php _e('Mssql sqlsrv函数适配器') ?></option><?php endif; ?>
                                 <?php if (_p('Mysql')): ?><option value="Mysql"<?php if('Mysql' == $adapter): ?> selected="selected"<?php endif; ?>><?php _e('Mysql 原生函数适配器') ?></option><?php endif; ?>
                                 <?php if (_p('SQLite')): ?><option value="SQLite"<?php if('SQLite' == $adapter): ?> selected="selected"<?php endif; ?>><?php _e('SQLite 原生函数适配器 (SQLite 2.x)') ?></option><?php endif; ?>
                                 <?php if (_p('Pgsql')): ?><option value="Pgsql"<?php if('Pgsql' == $adapter): ?> selected="selected"<?php endif; ?>><?php _e('Pgsql 原生函数适配器') ?></option><?php endif; ?>
